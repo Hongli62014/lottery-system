@@ -580,8 +580,7 @@ function centerFire(particleRatio: number, opts: any) {
 
 function setDefaultPersonList() {
   personConfig.setDefaultPersonList()
-  // 刷新页面
-  window.location.reload()
+  // 不刷新页面，让数据更新后自动重新初始化
 }
 // 随机替换数据
 function randomBallData(mod: 'default' | 'lucky' | 'sphere' = 'default') {
@@ -686,6 +685,14 @@ function cleanup() {
 }
 onMounted(() => {
   initTableData()
+  
+  // 如果没有数据，自动使用默认数据，确保用户一打开页面就能看到炫酷效果
+  if (tableData.value.length <= 0) {
+    setDefaultPersonList()
+    // 重新初始化表格数据和3D场景
+    initTableData()
+  }
+  
   init()
   animation()
   containerRef.value!.style.color = `${textColor}`
